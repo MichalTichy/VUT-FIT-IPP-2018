@@ -1,5 +1,5 @@
 <?php
-interface iProgram
+interface IProgram
 {
     public function ConvertToXml();
 }

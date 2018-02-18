@@ -18,9 +18,10 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeParser.php" />
     <Compile Include="ICodeParser.php" />
     <Compile Include="IInstruction.php" />
-    <Compile Include="iProgram.php" />
+    <Compile Include="IProgram.php" />
     <Compile Include="IValidator.php" />
     <Compile Include="parse.php" />
   </ItemGroup>
