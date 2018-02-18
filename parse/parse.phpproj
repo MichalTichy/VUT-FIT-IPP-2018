@@ -18,6 +18,10 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ICodeParser.php" />
+    <Compile Include="IInstruction.php" />
+    <Compile Include="iProgram.php" />
+    <Compile Include="IValidator.php" />
     <Compile Include="parse.php" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\DEVSENSE\PHP Tools\VS$(VisualStudioVersion)\Devsense.PHP.targets" />
