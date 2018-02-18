@@ -23,7 +23,9 @@
     <Compile Include="IInstruction.php" />
     <Compile Include="IProgram.php" />
     <Compile Include="IValidator.php" />
+    <Compile Include="LexicalException.php" />
     <Compile Include="parse.php" />
+    <Compile Include="Program.php" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\DEVSENSE\PHP Tools\VS$(VisualStudioVersion)\Devsense.PHP.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
