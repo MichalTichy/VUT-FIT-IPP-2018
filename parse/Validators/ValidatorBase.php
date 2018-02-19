@@ -9,5 +9,5 @@ abstract class ValidatorBase implements IValidator
         }
     }
 
-    protected abstract function Is($input);
+    public abstract function Is($input);
 }

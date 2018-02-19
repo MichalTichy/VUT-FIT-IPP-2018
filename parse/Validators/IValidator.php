@@ -4,5 +4,5 @@ interface IValidator
 {
     public function Validate($input);
 
-    protected function Is($input);
+    public function Is($input);
 }

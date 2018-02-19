@@ -3,7 +3,7 @@ class CodeParser implements ICodeParser
 {
     public function Parse($input) {
         $instructions=array();
-        
+
         foreach ($input as $line)
         {
             array_push($instructions,$this->CreateInstruction($line));
@@ -15,7 +15,7 @@ class CodeParser implements ICodeParser
 
     protected function ExtractInstructionCode($line){
         $arr = explode(' ',trim($line));
-        return $arr[0];
+        return strtoupper($arr[0]);
     }
 
     protected function CreateInstruction($line){
