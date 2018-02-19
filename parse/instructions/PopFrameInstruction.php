@@ -1,6 +1,6 @@
 <?php
 
-class CreateFrameInstruction implements IInstruction
+class PopFrameInstruction implements IInstruction
 {
     public function __construct($instructionTextRepresentation){
         $parser=new InstructionParser();

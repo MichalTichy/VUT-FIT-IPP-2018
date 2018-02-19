@@ -1,5 +1,6 @@
 <?php
-class MoveInstruction implements IInstruction
+
+class StrLenInstruction implements IInstruction
 {
     protected $arg1;
     protected $arg2;
@@ -9,11 +10,12 @@ class MoveInstruction implements IInstruction
         $this->arg1=$parser->ExtractArgument($instructionTextRepresentation,1);
         $this->arg2=$parser->ExtractArgument($instructionTextRepresentation,2);
 
-        $varValidator=new VariableValidator();
-        $varValidator->Validate($this->arg1);
+        $variableValidator=new VariableValidator();
+        $symbolValidator=new SymbolValidator();
 
-        $symbValidator=new SymbolValidator();
-        $symbValidator->Validate($this->arg2);
+        $variableValidator->Validate($this->arg1);
+        $symbolValidator->Validate($this->arg2);
+
     }
 
     public function ToXmlElement(){
