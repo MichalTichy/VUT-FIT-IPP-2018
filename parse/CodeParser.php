@@ -23,73 +23,71 @@ class CodeParser implements ICodeParser
         switch ($instructionCode)
         {
             case "MOVE":
-                throw new Exception("NOT IMPLEMENTED");
+                return new MoveInstruction($line);
             case "CREATEFRAME":
-                throw new Exception("NOT IMPLEMENTED");
+                return new CreateFrameInstruction($line);
             case "PUSHFRAME":
-                throw new Exception("NOT IMPLEMENTED");
+                return new PushFrameInstruction($line);
             case "POPFRAME":
-                throw new Exception("NOT IMPLEMENTED");
+                return new PopFrameInstruction($line);
             case "DEFVAR":
-                throw new Exception("NOT IMPLEMENTED");
+                return new DefVarInstruction($line);
             case "CALL":
-                throw new Exception("NOT IMPLEMENTED");
+                return new CallInstruction($line);
             case "RETURN":
-                throw new Exception("NOT IMPLEMENTED");
+                return new ReturnInstruction($line);
             case "PUSHS":
-                throw new Exception("NOT IMPLEMENTED");
+                return new PushsInstruction($line);
             case "POPS":
-                throw new Exception("NOT IMPLEMENTED");
+                return new PopsInstruction($line);
             case "ADD":
-                throw new Exception("NOT IMPLEMENTED");
+                return new AddInstruction($line);
             case "SUB":
-                throw new Exception("NOT IMPLEMENTED");
+                return new SubInstruction($line);
             case "MUL":
-                throw new Exception("NOT IMPLEMENTED");
+                return new MulInstruction($line);
             case "IDIV":
-                throw new Exception("NOT IMPLEMENTED");
+                return new IDivInstruction($line);
             case "LT":
-                throw new Exception("NOT IMPLEMENTED");
+                return new LTInstruction($line);
             case "GT":
-                throw new Exception("NOT IMPLEMENTED");
+                return new GTInstruction($line);
             case "EQ":
-                throw new Exception("NOT IMPLEMENTED");
-            case "AND":
-                throw new Exception("NOT IMPLEMENTED");
+                return new EQInstruction($line);
             case "OR":
-                throw new Exception("NOT IMPLEMENTED");
+                return new OrInstruction($line);
             case "NOT":
-                throw new Exception("NOT IMPLEMENTED");
+                return new NotInstruction($line);
             case "INT2CHAR":
-                throw new Exception("NOT IMPLEMENTED");
+                return new IntToCharInstruction($line);
             case "STRI2INT":
-                throw new Exception("NOT IMPLEMENTED");
+                return new StringToIntInstruction($line);
             case "READ":
-                throw new Exception("NOT IMPLEMENTED");
+                return new ReadInstruction($line);
             case "WRITE":
-                throw new Exception("NOT IMPLEMENTED");
+                return new WriteInstruction($line);
             case "CONCAT":
-                throw new Exception("NOT IMPLEMENTED");
+                return new ConcatInstruction($line);
             case "STRLEN":
-                throw new Exception("NOT IMPLEMENTED");
+                return new StrLenInstruction($line);
             case "GETCHAR":
-                throw new Exception("NOT IMPLEMENTED");
+                return new GetCharInstruction($line);
             case "SETCHAR":
-                throw new Exception("NOT IMPLEMENTED");
+                return new SetCharInstruction($line);
             case "TYPE":
-                throw new Exception("NOT IMPLEMENTED");
+                return new TypeInstruction($line);
             case "LABEL":
-                throw new Exception("NOT IMPLEMENTED");
+                return new LabelInstruction($line);
             case "JUMP":
-                throw new Exception("NOT IMPLEMENTED");
+                return new JumpInstruction($line);
             case "JUMPIFEQ":
-                throw new Exception("NOT IMPLEMENTED");
+                return new JumpIfEqInstruction($line);
             case "JUMPIFNEQ":
-                throw new Exception("NOT IMPLEMENTED");
+                return new JumpIfNEqInstruction($line);
             case "DPRINT":
-                throw new Exception("NOT IMPLEMENTED");
+                return new DPrintInstruction($line);
             case "BREAK":
-                throw new Exception("NOT IMPLEMENTED");
+                return new BreakInstruction($line);
         	default:
                 throw new LexicalException($instructionCode + " is an invalid instruction code.");
         }
