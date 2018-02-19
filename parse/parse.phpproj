@@ -22,6 +22,7 @@
   <ItemGroup>
     <Compile Include="CodeParser.php" />
     <Compile Include="ICodeParser.php" />
+    <Compile Include="instructions\CreateFrameInstruction.php" />
     <Compile Include="instructions\IInstruction.php" />
     <Compile Include="instructions\InstructionParser.php" />
     <Compile Include="instructions\MoveInstruction.php" />
