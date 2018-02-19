@@ -1,6 +1,6 @@
 <?php
 interface IProgram
 {
-    public function __construct($instructions);
+    public function __construct(array $instructions);
     public function ConvertToXml();
 }

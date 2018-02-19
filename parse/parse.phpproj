@@ -10,6 +10,8 @@
     </RootNamespace>
     <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
     <StartupFile>parse.php</StartupFile>
+    <Runtime>PHP</Runtime>
+    <RuntimeVersion>5.6</RuntimeVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <IncludeDebugInformation>true</IncludeDebugInformation>
@@ -20,12 +22,23 @@
   <ItemGroup>
     <Compile Include="CodeParser.php" />
     <Compile Include="ICodeParser.php" />
-    <Compile Include="IInstruction.php" />
+    <Compile Include="instructions\IInstruction.php" />
+    <Compile Include="instructions\InstructionParser.php" />
+    <Compile Include="instructions\MoveInstruction.php" />
     <Compile Include="IProgram.php" />
-    <Compile Include="IValidator.php" />
+    <Compile Include="Validators\BoolValidator.php" />
+    <Compile Include="Validators\IntValidator.php" />
+    <Compile Include="Validators\IValidator.php" />
     <Compile Include="LexicalException.php" />
     <Compile Include="parse.php" />
     <Compile Include="Program.php" />
+    <Compile Include="SyntaxException.php" />
+    <Compile Include="Validators\StringValidator.php" />
+    <Compile Include="Validators\ValidatorBase.php" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="instructions\" />
+    <Folder Include="Validators\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\DEVSENSE\PHP Tools\VS$(VisualStudioVersion)\Devsense.PHP.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

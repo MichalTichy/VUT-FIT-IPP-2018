@@ -1,7 +1,7 @@
 <?php
 class CodeParser implements ICodeParser
 {
-    public function Parse($input) : IProgram {
+    public function Parse($input) {
         $instructions=array();
         
         foreach ($input as $line)
@@ -13,12 +13,12 @@ class CodeParser implements ICodeParser
     }
 
 
-    protected function ExtractInstructionCode($line):string{
+    protected function ExtractInstructionCode($line){
         $arr = explode(' ',trim($line));
         return $arr[0];
     }
 
-    protected function CreateInstruction($line):IInstruction{
+    protected function CreateInstruction($line){
         $instructionCode=$this->ExtractInstructionCode($line);
         switch ($instructionCode)
         {
