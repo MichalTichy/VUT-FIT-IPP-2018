@@ -1,4 +1,5 @@
 <?php
+require_once("instructions\IInstruction.php");
 
 class PopFrameInstruction implements IInstruction
 {

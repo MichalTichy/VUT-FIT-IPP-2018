@@ -1,5 +1,6 @@
 <?php
 
+require_once("instructions\IInstruction.php");
 class NotInstruction implements IInstruction
 {
     protected $arg1;

@@ -1,5 +1,6 @@
 <?php
 
+require_once("instructions\IInstruction.php");
 class PushFrameInstruction implements IInstruction
 {
     public function __construct($instructionTextRepresentation){

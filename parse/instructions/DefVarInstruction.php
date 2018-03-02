@@ -1,5 +1,7 @@
 <?php
 
+require_once("instructions\IInstruction.php");
+
 class DefVarInstruction implements IInstruction
 {
     protected $arg1;

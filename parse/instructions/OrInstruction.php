@@ -1,6 +1,7 @@
 <?php
 
 
+require_once("instructions\IInstruction.php");
 class OrInstruction implements IInstruction
 {
     protected $arg1;

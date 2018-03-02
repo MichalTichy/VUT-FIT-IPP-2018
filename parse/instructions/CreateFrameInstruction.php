@@ -1,5 +1,6 @@
 <?php
 
+require_once("instructions\IInstruction.php");
 class CreateFrameInstruction implements IInstruction
 {
     public function __construct($instructionTextRepresentation){

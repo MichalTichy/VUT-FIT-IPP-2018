@@ -1,6 +1,7 @@
 <?php
+require_once("SyntaxException.php");
 class InstructionParser
-{
+{   
 
     public function ExtractArgument($instruction,$argumentNumber ){
         $arr = explode(' ',trim($instruction));

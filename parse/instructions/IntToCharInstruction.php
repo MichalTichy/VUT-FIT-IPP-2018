@@ -1,5 +1,6 @@
 <?php
 
+require_once("instructions\IInstruction.php");
 class IntToCharInstruction implements IInstruction
 {
     protected $arg1;
