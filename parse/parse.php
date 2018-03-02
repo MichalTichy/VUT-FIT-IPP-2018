@@ -1,15 +1,20 @@
 <?php
+require_once("CodeParser.php");
 
 function LoadInput(){
     $stdin = fopen('php://stdin', 'r');
 
     while ($line = fgets($stdin)) {
-        yield trim($line);
+        yield trim(RemoveComment($line));
     }
 }
 
+function RemoveComment($input){
+    return strpos($input, "#")!==false ? substr($input, 0, strpos($input, "#")) : $input;
+}
+
 function SaveXml($xml){
-    
+
 }
 
 $parser=new CodeParser();

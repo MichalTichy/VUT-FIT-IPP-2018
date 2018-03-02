@@ -1,8 +1,6 @@
 <?php
-
-
-
-class TypeValidator
+require_once("Validators\ValidatorBase.php");
+class TypeValidator extends ValidatorBase
 {
     public function Is($input){
 

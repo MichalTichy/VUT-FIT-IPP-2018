@@ -1,11 +1,25 @@
 <?php
+
+require_once("ICodeParser.php");
+require_once("LexicalException.php");
 class CodeParser implements ICodeParser
 {
+    public function __construct(){
+
+        foreach (glob("instructions/*.php") as $filename)
+        {
+            require_once($filename);
+        }
+    }
+
     public function Parse($input) {
         $instructions=array();
 
         foreach ($input as $line)
         {
+            if (strlen($line)==0)
+            	continue;
+            
             array_push($instructions,$this->CreateInstruction($line));
         }
 

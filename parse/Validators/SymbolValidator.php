@@ -1,9 +1,11 @@
 <?php
-class SymbolValidator
+
+require_once("Validators\ValidatorBase.php");
+class SymbolValidator extends ValidatorBase
 {
     public function Is($input){
-        $varValidator=new StringValidator();
-        $constValidator=new IntValidator();
+        $varValidator=new VariableValidator();
+        $constValidator=new ConstantValidator();
 
         return $varValidator->Is($input) || $constValidator->Is($input);
     }
