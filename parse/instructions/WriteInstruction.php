@@ -1,7 +1,6 @@
 <?php
-
-require_once("instructions\IInstruction.php");
-class WriteInstruction implements IInstruction
+require_once("instructions\InstructionBase.php");
+class WriteInstruction extends InstructionBase
 {
     protected $arg1;
     public function __construct($instructionTextRepresentation){
@@ -12,9 +11,5 @@ class WriteInstruction implements IInstruction
         $symbolValidator=new SymbolValidator();
 
         $symbolValidator->Validate($this->arg1);
-    }
-
-    public function ToXmlElement(){
-
     }
 }

@@ -1,14 +1,9 @@
 <?php
-
-require_once("instructions\IInstruction.php");
-class CreateFrameInstruction implements IInstruction
+require_once("instructions\InstructionBase.php");
+class CreateFrameInstruction extends InstructionBase
 {
     public function __construct($instructionTextRepresentation){
         $parser=new InstructionParser();
         $parser->CheckIfInstructionHaveAllParameters($instructionTextRepresentation,0);
-    }
-
-    public function ToXmlElement(){
-
     }
 }

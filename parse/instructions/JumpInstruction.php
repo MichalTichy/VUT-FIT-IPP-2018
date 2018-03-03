@@ -1,7 +1,6 @@
 <?php
-
-require_once("instructions\IInstruction.php");
-class JumpInstruction implements IInstruction
+require_once("instructions\InstructionBase.php");
+class JumpInstruction extends InstructionBase
 {
     protected $arg1;
     public function __construct($instructionTextRepresentation){
@@ -12,10 +11,6 @@ class JumpInstruction implements IInstruction
         $labelValidator=new LabelValidator();
 
         $labelValidator->Validate($this->arg1);
-
-    }
-
-    public function ToXmlElement(){
 
     }
 }

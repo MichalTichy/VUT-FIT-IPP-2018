@@ -1,14 +1,9 @@
 <?php
-require_once("instructions\IInstruction.php");
-
-class PopFrameInstruction implements IInstruction
+require_once("instructions\InstructionBase.php");
+class PopFrameInstruction extends InstructionBase
 {
     public function __construct($instructionTextRepresentation){
         $parser=new InstructionParser();
         $parser->CheckIfInstructionHaveAllParameters($instructionTextRepresentation,0);
-    }
-
-    public function ToXmlElement(){
-
     }
 }

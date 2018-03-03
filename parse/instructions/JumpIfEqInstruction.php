@@ -1,11 +1,7 @@
 <?php
-
-require_once("instructions\IInstruction.php");
+require_once("instructions\InstructionBase.php");
 class JumpIfEqInstruction implements IInstruction
 {
-    protected $arg1;
-    protected $arg2;
-    protected $arg3;
     public function __construct($instructionTextRepresentation){
         $parser=new InstructionParser();
         $parser->CheckIfInstructionHaveAllParameters($instructionTextRepresentation,3);
@@ -19,10 +15,6 @@ class JumpIfEqInstruction implements IInstruction
         $labelValidator->Validate($this->arg1);
         $symbolValidator->Validate($this->arg2);
         $symbolValidator->Validate($this->arg3);
-
-    }
-
-    public function ToXmlElement(){
 
     }
 }

@@ -1,19 +1,12 @@
 <?php
-
-require_once("instructions\IInstruction.php");
-
-class DefVarInstruction implements IInstruction
+require_once("instructions\InstructionBase.php");
+class DefVarInstruction extends InstructionBase
 {
-    protected $arg1;
     public function __construct($instructionTextRepresentation){
         $parser=new InstructionParser();
         $parser->CheckIfInstructionHaveAllParameters($instructionTextRepresentation,1);
         $this->arg1=$parser->ExtractArgument($instructionTextRepresentation,1);
         $varValidator=new VariableValidator();
         $varValidator->Validate($this->arg1);
-    }
-
-    public function ToXmlElement(){
-
     }
 }

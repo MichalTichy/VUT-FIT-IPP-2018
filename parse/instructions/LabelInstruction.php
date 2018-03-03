@@ -1,9 +1,7 @@
 <?php
-
-require_once("instructions\IInstruction.php");
-class LabelInstruction implements IInstruction
+require_once("instructions\InstructionBase.php");
+class LabelInstruction extends InstructionBase
 {
-    protected $arg1;
     public function __construct($instructionTextRepresentation){
         $parser=new InstructionParser();
         $parser->CheckIfInstructionHaveAllParameters($instructionTextRepresentation,1);
@@ -12,10 +10,6 @@ class LabelInstruction implements IInstruction
         $labelValidator=new LabelValidator();
 
         $labelValidator->Validate($this->arg1);
-
-    }
-
-    public function ToXmlElement(){
 
     }
 }

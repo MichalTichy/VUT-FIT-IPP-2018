@@ -1,10 +1,7 @@
 <?php
-
-require_once("instructions\IInstruction.php");
-class IntToCharInstruction implements IInstruction
+require_once("instructions\InstructionBase.php");
+class IntToCharInstruction extends InstructionBase
 {
-    protected $arg1;
-    protected $arg2;
     public function __construct($instructionTextRepresentation){
         $parser=new InstructionParser();
         $parser->CheckIfInstructionHaveAllParameters($instructionTextRepresentation,2);
@@ -16,10 +13,6 @@ class IntToCharInstruction implements IInstruction
 
         $variableValidator->Validate($this->arg1);
         $symbolValidator->Validate($this->arg2);
-
-    }
-
-    public function ToXmlElement(){
 
     }
 }

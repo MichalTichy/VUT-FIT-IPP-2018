@@ -1,8 +1,7 @@
 <?php
-require_once("instructions\IInstruction.php");
-class DPrintInstruction implements IInstruction
+require_once("instructions\InstructionBase.php");
+class DPrintInstruction extends InstructionBase
 {
-    protected $arg1;
     public function __construct($instructionTextRepresentation){
         $parser=new InstructionParser();
         $parser->CheckIfInstructionHaveAllParameters($instructionTextRepresentation,1);
@@ -11,10 +10,6 @@ class DPrintInstruction implements IInstruction
         $symbolValidator=new SymbolValidator();
 
         $symbolValidator->Validate($this->arg1);
-
-    }
-
-    public function ToXmlElement(){
 
     }
 }

@@ -1,9 +1,7 @@
 <?php
-require_once("instructions\IInstruction.php");
-class MoveInstruction implements IInstruction
+require_once("instructions\InstructionBase.php");
+class MoveInstruction extends InstructionBase
 {
-    protected $arg1;
-    protected $arg2;
     public function __construct($instructionTextRepresentation){
         $parser=new InstructionParser();
         $parser->CheckIfInstructionHaveAllParameters($instructionTextRepresentation,2);
@@ -15,9 +13,5 @@ class MoveInstruction implements IInstruction
 
         $symbValidator=new SymbolValidator();
         $symbValidator->Validate($this->arg2);
-    }
-
-    public function ToXmlElement(){
-
     }
 }
