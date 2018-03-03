@@ -15,12 +15,9 @@ class CodeParser implements ICodeParser
     public function Parse($input) {
         $instructions=array();
 
-        foreach ($input as $line)
-        {
-            if (strlen($line)==0)
-            	continue;
-            
-            array_push($instructions,$this->CreateInstruction($line));
+        foreach ($input as $instruction)
+        {            
+            array_push($instructions,$this->CreateInstruction($instruction));
         }
 
         return new Program($instructions);
