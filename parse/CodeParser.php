@@ -2,6 +2,7 @@
 
 require_once("ICodeParser.php");
 require_once("LexicalException.php");
+require_once("Program.php");
 class CodeParser implements ICodeParser
 {
     public function __construct(){

@@ -7,5 +7,5 @@ foreach (glob("Validators/*.php") as $filename)
 interface IInstruction
 {
     public function __construct($instructionTextRepresentation);
-    public function ToXmlElement();
+    public function ToXmlElement($XmlDocument);
 }

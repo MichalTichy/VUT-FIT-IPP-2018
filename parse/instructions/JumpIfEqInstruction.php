@@ -1,6 +1,6 @@
 <?php
 require_once("instructions\InstructionBase.php");
-class JumpIfEqInstruction implements IInstruction
+class JumpIfEqInstruction extends InstructionBase
 {
     public function __construct($instructionTextRepresentation){
         $parser=new InstructionParser();

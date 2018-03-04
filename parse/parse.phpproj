@@ -34,7 +34,7 @@
     <Compile Include="instructions\GTInstruction.php" />
     <Compile Include="instructions\IDivInstruction.php" />
     <Compile Include="instructions\IInstruction.php" />
-    <Compile Include="instructions\InstrucionBase.php" />
+    <Compile Include="instructions\InstructionBase.php" />
     <Compile Include="instructions\InstructionParser.php" />
     <Compile Include="instructions\IntToCharInstruction.php" />
     <Compile Include="instructions\JumpIfEqInstruction.php" />

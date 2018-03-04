@@ -1,5 +1,5 @@
 <?php
-
+require_once("IProgram.php");
 class Program implements IProgram
 {
     protected $instructions;
@@ -13,11 +13,13 @@ class Program implements IProgram
         $root->setAttribute("language","IPPcode18");
 
         $counter=1;
-        foreach($instructions as $instruction){
-            $instructionNode=$instruction->ToXmlElement();
+        foreach($this->instructions as $instruction){
+            $instructionNode=$instruction->ToXmlElement($domTree);
             $instructionNode->setAttribute("order",$counter++);
             $root->appendChild($instructionNode);
         }
+
+        $domTree->appendChild($root);
 
         return $domTree;
     }
