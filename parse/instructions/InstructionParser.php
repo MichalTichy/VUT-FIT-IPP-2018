@@ -34,34 +34,38 @@ class InstructionParser
         if($intValidator->Is($arg))
         {
             $node->setAttribute("type","int");
-            $node->nodeValue=explode('@',$arg)[1];
+            $value=strpos($arg, "@")!==false ? substr($arg, strpos($arg, "@")+1) : $arg;
+            $node->textContent=$value;
         }
         else if($stringValidator->Is($arg))
         {
             $node->setAttribute("type","string");
-            $node->nodeValue=explode('@',$arg)[1];
+            $value=strpos($arg, "@")!==false ? substr($arg, strpos($arg, "@")+1) : $arg;
+            $node->textContent=$value;
         }
         else if($boolValidator->Is($arg))
         {
             $node->setAttribute("type","bool");
-            $node->nodeValue=strtolower(explode('@',$arg)[1]);
-        }
-        else if($labelValidator->Is($arg))
-        {
-            $node->setAttribute("type","label");
-            $node->nodeValue=$arg;
+            $value=strpos($arg, "@")!==false ? substr($arg, strpos($arg, "@")+1) : $arg;
+            $node->textContent=$value;
         }
         else if($typeValidator->Is($arg))
         {
             $node->setAttribute("type","type");
-            $node->nodeValue=$arg;
+            $node->textContent=$arg;
+        }
+        else if($labelValidator->Is($arg))
+        {
+            $node->setAttribute("type","label");
+            $node->textContent=$arg;
         }
         else if($varValidator->Is($arg))
         {
             $node->setAttribute("type","var");
 
             $argParts=explode('@',$arg);
-            $node->nodeValue=strtoupper($argParts[0])."@".$argParts[1];
+            $argParts[0]=strtoupper($argParts[0]);
+            $node->textContent=implode("@",$argParts);
         }
         else
         {

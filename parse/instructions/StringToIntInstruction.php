@@ -1,6 +1,6 @@
 <?php
 require_once("instructions\InstructionBase.php");
-class StringToIntInstruction extends InstructionBase
+class Str2IntInstruction extends InstructionBase
 {
     public function __construct($instructionTextRepresentation){
         $parser=new InstructionParser();

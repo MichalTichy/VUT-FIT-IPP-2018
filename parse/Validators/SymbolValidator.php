@@ -7,6 +7,6 @@ class SymbolValidator extends ValidatorBase
         $varValidator=new VariableValidator();
         $constValidator=new ConstantValidator();
 
-        return $varValidator->Is($input) || $constValidator->Is($input);
+        return $constValidator->Is($input) || $varValidator->Is($input);
     }
 }

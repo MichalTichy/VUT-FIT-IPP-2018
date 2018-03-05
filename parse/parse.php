@@ -11,6 +11,7 @@ function LoadInput(){
     while (($line = fgets($stdin)) && !$end) {
 
         $line=trim(RemoveComment($line));
+        $line=preg_replace('!\s+!', ' ', $line);
         if (strlen($line)==0)
             continue;
 

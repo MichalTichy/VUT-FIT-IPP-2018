@@ -66,14 +66,16 @@ class CodeParser implements ICodeParser
                 return new GTInstruction($line);
             case "EQ":
                 return new EQInstruction($line);
+            case "AND":
+                return new AndInstruction($line);
             case "OR":
                 return new OrInstruction($line);
             case "NOT":
                 return new NotInstruction($line);
             case "INT2CHAR":
-                return new IntToCharInstruction($line);
+                return new Int2CharInstruction($line);
             case "STRI2INT":
-                return new StringToIntInstruction($line);
+                return new Str2IntInstruction($line);
             case "READ":
                 return new ReadInstruction($line);
             case "WRITE":
@@ -101,7 +103,7 @@ class CodeParser implements ICodeParser
             case "BREAK":
                 return new BreakInstruction($line);
         	default:
-                throw new LexicalException($instructionCode + " is an invalid instruction code.");
+                throw new LexicalException($instructionCode . " is an invalid instruction code.");
         }
 
     }

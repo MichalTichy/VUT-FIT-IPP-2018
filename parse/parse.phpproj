@@ -46,6 +46,7 @@
     <Compile Include="instructions\MoveInstruction.php" />
     <Compile Include="instructions\MulInstruction.php" />
     <Compile Include="instructions\NotInstruction.php" />
+    <Compile Include="instructions\AndInstruction.php" />
     <Compile Include="instructions\OrInstruction.php" />
     <Compile Include="instructions\PopFrameInstruction.php" />
     <Compile Include="instructions\PopsInstruction.php" />
