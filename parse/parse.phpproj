@@ -12,6 +12,9 @@
     <StartupFile>parse.php</StartupFile>
     <Runtime>PHP</Runtime>
     <RuntimeVersion>5.6</RuntimeVersion>
+    <SaveServerSettingsInUserFile>false</SaveServerSettingsInUserFile>
+    <EnvName>CLI</EnvName>
+    <CommandLineArguments>--stats="test.txt" --loc --comments</CommandLineArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <IncludeDebugInformation>true</IncludeDebugInformation>

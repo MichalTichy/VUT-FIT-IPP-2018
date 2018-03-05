@@ -6,6 +6,11 @@ class Program implements IProgram
     function __construct(array $instructions){
         $this->instructions=$instructions;
     }
+
+    public function GetCountOfInstructions(){
+        return count($this->instructions);
+    }
+
     public function ConvertToXml(){
         $domTree=new DOMDocument('1.0', 'UTF-8');
 
