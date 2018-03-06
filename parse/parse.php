@@ -7,8 +7,7 @@ function LoadInput(){
     if(trim($firstLine)!=".ippcode18")
         throw new SyntaxException("Missing language definition (.IPPcode18).");
 
-    $end=false;
-    while (($line = fgets($stdin)) && !$end) {
+    while ($line = fgets($stdin)) {
 
         $line=trim(RemoveComment($line));
         $line=preg_replace('!\s+!', ' ', $line);
@@ -96,23 +95,23 @@ try
 }
 catch (InvalidArgumentException $exception)
 {
-    die(10);
+    exit(10);
 }
 catch (InvalidArgumentException $exception)
 {
-    die(10);
+    exit(10);
 }
 catch (SyntaxException $exception)
 {
-	die(21);
+	exit(21);
 }
 catch (LexicalException $exception)
 {
-    die(21);
+    exit(21);
 }
 catch (Exception $exception)
 {
-	die(99);
+	exit(99);
 }
 
 

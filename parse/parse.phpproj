@@ -14,7 +14,8 @@
     <RuntimeVersion>5.6</RuntimeVersion>
     <SaveServerSettingsInUserFile>false</SaveServerSettingsInUserFile>
     <EnvName>CLI</EnvName>
-    <CommandLineArguments>--stats="test.txt" --loc --comments</CommandLineArguments>
+    <CommandLineArguments>
+    </CommandLineArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <IncludeDebugInformation>true</IncludeDebugInformation>
