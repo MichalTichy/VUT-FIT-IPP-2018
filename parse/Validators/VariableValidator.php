@@ -1,5 +1,5 @@
 <?php
-require_once("Validators\ValidatorBase.php");
+require_once("./Validators/ValidatorBase.php");
 class VariableValidator extends ValidatorBase
 {
     public function Is($input){

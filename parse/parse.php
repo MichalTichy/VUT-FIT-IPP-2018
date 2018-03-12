@@ -1,5 +1,5 @@
 <?php
-require_once("CodeParser.php");
+require_once("./CodeParser.php");
 
 function LoadInput(){
     $stdin = fopen('php://stdin', 'r');
@@ -10,7 +10,7 @@ function LoadInput(){
     while ($line = fgets($stdin)) {
 
         $line=trim(RemoveComment($line));
-        $line=preg_replace('!\s+!', ' ', $line);
+        $line=preg_replace('![\s\t]+!', ' ', $line);
         if (strlen($line)==0)
             continue;
 
@@ -43,10 +43,10 @@ function PrintHelpIfRequested($argc,array $argv){
 }
 
 function PrintStatsIfRequested($argc,array $argv,$countOfComments,$countOfInstructions){
-    if (preg_grep("/^--stats=.*$/",$argv) === false && (in_array("--loc",$argv) || in_array("--comments",$argv)))
+    if (count(preg_grep("/^--stats=.*$/",$argv)) !== 0 && (in_array("--loc",$argv) || in_array("--comments",$argv)))
         throw new InvalidArgumentException();
 
-    if (preg_grep("/^--stats=.*$/",$argv) === false)
+    if (count(preg_grep("/^--stats=.*$/",$argv))===0)
         return;
 
     $statsArg=array_pop(preg_grep("/^--stats=.*$/",$argv));
@@ -88,7 +88,7 @@ try
 
     $program=$parser->Parse(LoadInput());
 
-    PrintStatsIfRequested($argc,$argv,$GLOBALS['CountOfComments'],$program->GetCountOfInstructions());
+    PrintStatsIfRequested($argc,$argv,$GLOBALS['CountOfComments'],0);
 
     $xml = $program->ConvertToXml();
     fwrite(STDOUT, $xml->saveXML());
@@ -103,18 +103,15 @@ catch (InvalidArgumentException $exception)
 }
 catch (SyntaxException $exception)
 {
-	exit(21);
+	exit($exception);
 }
 catch (LexicalException $exception)
 {
-    exit(21);
+    exit($exception);
 }
 catch (Exception $exception)
 {
 	exit(99);
 }
-
-
-
 
 ?>

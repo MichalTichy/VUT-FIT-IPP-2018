@@ -1,5 +1,5 @@
 <?php
-require_once("instructions\InstructionBase.php");
+require_once("./instructions/InstructionBase.php");
 class CreateFrameInstruction extends InstructionBase
 {
     public function __construct($instructionTextRepresentation){

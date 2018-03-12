@@ -1,5 +1,5 @@
 <?php
-require_once("Validators\IValidator.php");
+require_once("./Validators/IValidator.php");
 abstract class ValidatorBase implements IValidator
 {
 

@@ -1,5 +1,5 @@
 <?php
-require_once("IProgram.php");
+require_once("./IProgram.php");
 class Program implements IProgram
 {
     protected $instructions;

@@ -1,5 +1,5 @@
 <?php
-require_once("instructions\InstructionBase.php");
+require_once("./instructions/InstructionBase.php");
 class DefVarInstruction extends InstructionBase
 {
     public function __construct($instructionTextRepresentation){

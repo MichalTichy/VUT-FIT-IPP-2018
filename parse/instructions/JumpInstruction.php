@@ -1,5 +1,5 @@
 <?php
-require_once("instructions\InstructionBase.php");
+require_once("./instructions/InstructionBase.php");
 class JumpInstruction extends InstructionBase
 {
     protected $arg1;

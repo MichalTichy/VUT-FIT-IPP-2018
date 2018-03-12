@@ -1,13 +1,13 @@
 <?php
 
-require_once("ICodeParser.php");
-require_once("LexicalException.php");
-require_once("Program.php");
+require_once("./ICodeParser.php");
+require_once("./LexicalException.php");
+require_once("./Program.php");
 class CodeParser implements ICodeParser
 {
     public function __construct(){
 
-        foreach (glob("instructions/*.php") as $filename)
+        foreach (glob("./instructions/*.php") as $filename)
         {
             require_once($filename);
         }
@@ -17,7 +17,7 @@ class CodeParser implements ICodeParser
         $instructions=array();
 
         foreach ($input as $instruction)
-        {            
+        {
             array_push($instructions,$this->CreateInstruction($instruction));
         }
 

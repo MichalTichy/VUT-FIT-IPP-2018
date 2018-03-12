@@ -1,6 +1,6 @@
 <?php
 
-foreach (glob("Validators/*.php") as $filename)
+foreach (glob("./Validators/*.php") as $filename)
 {
     require_once($filename);
 }

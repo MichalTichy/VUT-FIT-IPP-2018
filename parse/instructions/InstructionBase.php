@@ -1,6 +1,6 @@
 <?php
 
-require_once("instructions\IInstruction.php");
+require_once("./instructions/IInstruction.php");
 
 abstract class InstructionBase implements IInstruction
 {

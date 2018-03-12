@@ -1,5 +1,5 @@
 <?php
-require_once("SyntaxException.php");
+require_once("./SyntaxException.php");
 class InstructionParser
 {
 
