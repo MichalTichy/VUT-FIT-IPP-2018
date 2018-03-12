@@ -75,7 +75,7 @@ class CodeParser implements ICodeParser
             case "INT2CHAR":
                 return new Int2CharInstruction($line);
             case "STRI2INT":
-                return new Str2IntInstruction($line);
+                return new Stri2IntInstruction($line);
             case "READ":
                 return new ReadInstruction($line);
             case "WRITE":
