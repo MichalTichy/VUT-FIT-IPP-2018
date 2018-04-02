@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "parse", "parse\parse.phpproj", "{599FBBE9-9116-449F-BACC-693A5F1E2B34}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "interpret", "interpret\interpret.pyproj", "{E52993C3-F334-4F7E-A3FC-252AD6D0DCFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{599FBBE9-9116-449F-BACC-693A5F1E2B34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{599FBBE9-9116-449F-BACC-693A5F1E2B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E52993C3-F334-4F7E-A3FC-252AD6D0DCFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E52993C3-F334-4F7E-A3FC-252AD6D0DCFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
