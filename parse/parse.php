@@ -103,11 +103,11 @@ catch (InvalidArgumentException $exception)
 }
 catch (SyntaxException $exception)
 {
-	exit($exception);
+    exit(1);
 }
 catch (LexicalException $exception)
 {
-    exit($exception);
+    exit(1);
 }
 catch (Exception $exception)
 {
