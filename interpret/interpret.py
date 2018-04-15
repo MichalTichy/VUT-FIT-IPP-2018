@@ -1,25 +1,50 @@
 import re
 import xml.etree.ElementTree as ElementTree
+import argparse
+import sys
 
-def GetPathToXml():
-    return r"C:\Users\email\Desktop\input.xml"
+class ParameterException(Exception):
+    pass
+class InputFileException(Exception):
+    pass
+class OutputFileException(Exception):
+    pass
+class SemanticException(Exception):
+    pass
+class FormatException(Exception):
+    pass
+class OperandTypeException(Exception):
+    pass
+class UndeclaredVarException(Exception):
+    pass
+class FrameDoesNotExistException(Exception):
+    pass
+class MissingValueException(Exception):
+    pass
+class StringOperationException(Exception):
+    pass
 
 class InstuctionPoiner(object):
     def __init__(self):
-        self.IP=0;
+        self.IP=0
         self.labels=dict()
         self.callStack=list()
     def RegisterLabel(self,Label:str):
         if Label in self.labels:
-            raise SystemError
+            raise SemanticException()
         self.labels[Label]=self.IP
     def GoToLabel(self,Label:str):
         if Label not in self.labels:
-            raise SystemError
+            raise SemanticException()
         self.callStack.append(self.IP)
         self.IP=self.labels[Label]
     def Return(self):
+        if len(self.callStack)==0:
+            raise MissingValueException()
         self.IP=self.callStack.pop()
+    def ResetPointer(self):
+        self.IP=0
+        self.callStack=list()
 
 class InstructionProcessor(object):
     def __init__(self, instructionsList):
@@ -30,14 +55,26 @@ class InstructionProcessor(object):
         super().__init__()
 
     def __GetInstruction(self):
-        return self.instructions[self.InstuctionPoiner.IP]
+        if self.InstuctionPoiner.IP < len(self.instructions):
+            ins = self.instructions[self.InstuctionPoiner.IP]
+            self.InstuctionPoiner.IP+=1
+            return ins
+        return None
 
     def Execute(self):
         currentInstruction=self.__GetInstruction()
         while currentInstruction is not None:
-            currentInstruction.Execute()
+            if not isinstance(currentInstruction,LabelInstruction):
+                currentInstruction.Execute(self.InstuctionPoiner,self.symTable,self.stack)
             currentInstruction=self.__GetInstruction()
 
+    def RegisterLabels(self):
+        currentInstruction=self.__GetInstruction()
+        while currentInstruction is not None:
+            if isinstance(currentInstruction,LabelInstruction):
+                currentInstruction.Execute(self.InstuctionPoiner,self.symTable,self.stack)
+            currentInstruction=self.__GetInstruction()
+        self.InstuctionPoiner.ResetPointer()
 
 class SymbolTable(object):
     def __init__(self):
@@ -53,6 +90,8 @@ class SymbolTable(object):
         elif symbolSourceName=="GF":
             return self.GlobalSymbols
         elif symbolSourceName=="LF":
+            if len(self.LocalSymbols)==0:
+                raise FrameDoesNotExistException()
             return self.LocalSymbols[-1]
         else:
             raise SyntaxError
@@ -61,34 +100,35 @@ class SymbolTable(object):
         symbolTable=self.getRequestedSymbolTable(symbolName)
         symbol=Symbol(symbolName)
         if symbolTable==None:
-            raise SystemError
-        if symbol.name in symbolTable.keys:
-            raise SystemError
+            raise FrameDoesNotExistException()
+        if symbol.name in symbolTable.keys():
+            raise UndeclaredVarException()
         symbolTable[symbol.name] = symbol;
 
-    def Get(self, symbolName,expectedType=None):        
+    def Get(self, symbolName , expectedType=None):        
         symbolTable=self.getRequestedSymbolTable(symbolName)
         
-        symbolName = symbolName[name.index('@'):]
+        symbolName = symbolName[symbolName.index('@')+1:]
         if symbolTable==None:
-            raise SystemError
+            raise FrameDoesNotExistException()
 
-        if symbolName in symbolTable.keys:
+        if symbolName in symbolTable.keys():
             symbol = symbolTable[symbolName]
             if expectedType!=None and symbol.type!=expectedType:
-                raise SystemError
-        return SystemError
+                raise OperandTypeException()
+            return symbol
+        raise UndeclaredVarException()
     def CreateFrame(self):
         self.TemporarySymbols=dict()
     def PushFrame(self):
         if self.TemporarySymbols==None:
-            raise SystemError
+            raise FrameDoesNotExistException()
         self.LocalSymbols.append(self.TemporarySymbols)
         self.TemporarySymbols=None
     def PopFrame(self):
         if len(self.LocalSymbols)==0:
-            raise SystemError
-        self.TemporarySymbols=LocalSymbols.pop()
+            raise FrameDoesNotExistException()
+        self.TemporarySymbols=self.LocalSymbols.pop()
 
 
 from enum import Enum
@@ -102,7 +142,7 @@ class DataType(Enum):
 
 class Symbol(object):
     def __init__(self, name: str):
-        self.name = name[name.index('@'):]
+        self.name = name[name.index('@')+1:]
         self.type = None
         self.value = None
     def __eq__(self, other):
@@ -110,54 +150,54 @@ class Symbol(object):
 
     def SetValue(self,value):
         if isinstance(value,Symbol):
-            type=value.type
-            self.value=value.value
-        elif IntArgumentValidator().Is(value):
-            type=DataType.INT
+            self.type=value.type
+            self.value=value.value 
+        elif isinstance(value,bool):            
+            self.type=DataType.BOOL
+            self.value=value           
+        elif isinstance(value,int) or isinstance(value,float):
+            self.type=DataType.INT
             self.value=int(value)
-        elif BoolArgumentValidator.Is(value):            
+        elif BoolArgumentValidator().Is(value):            
             self.type=DataType.BOOL
             self.value= value != "false"
         elif StringArgumentValidator().Is(value):            
             self.type=DataType.STRING
             self.value=value
-        elif isinstance(value,int):
-            type=DataType.INT
-            self.value=value
-        elif isinstance(value,bool):            
-            self.type=DataType.BOOL
-            self.value=value
         elif isinstance(value,str):            
             self.type=DataType.STRING
-            self.value=value
+            self.value=value            
+        elif IntArgumentValidator().Is(value):
+            self.type=DataType.INT
+            self.value=int(value)
         else:
-            raise SystemError
+            raise SemanticException()
 
 
     def ExtractValue(value,symTable:SymbolTable,RequiredType:DataType):
-        if VarArgumentValidator(value):
+        if VarArgumentValidator().Is(value):
             sym=symTable.Get(value,RequiredType)
             if sym.type == None:
                 return None
             return sym.value
+        if isinstance(value,bool):
+            if RequiredType!=None and RequiredType != DataType.BOOL:
+                raise OperandTypeException()
+            return value
         if isinstance(value,int):
             if RequiredType!=None and RequiredType != DataType.INT:
-                raise SystemError
+                raise OperandTypeException()
             return value
         if isinstance(value,str):
             if RequiredType!=None and RequiredType != DataType.STRING:
-                raise SystemError
+                raise OperandTypeException()
             return value
-        if isinstance(value,bool):
-            if RequiredType!=None and RequiredType != DataType.BOOL:
-                raise SystemError
-            return value
-        raise SystemError
+        raise SemanticException()
 
 class XmlParser(object):
     def Parse(self, xmlPath):
         tree = ElementTree.parse(xmlPath)
-
+        
         root = tree.getroot();
         self.__CheckRoot(root)
         instructions=list()
@@ -166,16 +206,16 @@ class XmlParser(object):
                 continue
             if instruction.tag == 'instruction':
                 if int(instruction.get("order"))!=len(instructions)+1:
-                    raise SyntaxError
+                    raise FormatException()
                 instructions.append(self.__CreateInstruction(instruction))
             else:
-                raise SyntaxError
+                raise FormatException()
         return instructions
 
     def __CheckRoot(self, rootElement):
-        if rootElement.tag != 'program' or len(rootElement.attrib) != 1 or rootElement.attrib.get(
+        if rootElement.tag != 'program' or len(rootElement.attrib) > 3 or rootElement.attrib.get(
                 'language') != 'IPPcode18':
-            raise SyntaxError
+            raise FormatException()
 
     def __CreateInstruction(self, instructionElemment):
         instrucitonCode = instructionElemment.get("opcode")
@@ -244,9 +284,9 @@ class XmlParser(object):
         elif instrucitonCode == "JUMPIFNEQ":
             return JumpIfNotEqInstruction(instructionElemment)
         elif instrucitonCode == "DPRINT":
-            return MoveInstruction(instructionElemment)
-        elif instrucitonCode == "BREAK":
             return DPrintInstruction(instructionElemment)
+        elif instrucitonCode == "BREAK":
+            return BreakInstruction(instructionElemment)
         else:
             raise SyntaxError
 
@@ -267,7 +307,7 @@ class VarNameValidator(ValidatorBase):
 
 class IntArgumentValidator(ValidatorBase):
     def Is(self, inputData: str):
-        return re.match(r"^[\x2B\x2D]?[0-9]*$", inputData) is not None
+        return re.match(r"^[\x2B\x2D]?[0-9]+$", inputData) is not None
 
 
 class StringArgumentValidator(ValidatorBase):
@@ -292,6 +332,9 @@ class TypeArgumentValidator(ValidatorBase):
 
 class VarArgumentValidator(ValidatorBase):
     def Is(self, inputData: str):
+        if not isinstance(inputData,str):
+            return False
+
         inputParts = inputData.split("@")
         if len(inputParts) < 2:
             return False
@@ -324,7 +367,7 @@ class Instruction(object):
 
     def _GetAttributeType(self, element):
         if element.tag != "arg1" and element.tag != "arg2" and element.tag != "arg3":
-            raise SyntaxError
+            raise FormatException()
         typeAttr = element.get("type")
         if typeAttr == "int":
             return AttributeType.INT
@@ -347,7 +390,7 @@ class Instruction(object):
             if type != AttributeType.INT and type != AttributeType.BOOL and type != AttributeType.STRING and type != AttributeType.VAR:
                 raise SyntaxError
         elif expectedType != type:
-            raise SyntaxError
+            raise OperandTypeException()
 
         innerText = element.text
         if innerText==None:
@@ -358,7 +401,7 @@ class Instruction(object):
             return int(innerText)
         elif type == AttributeType.BOOL:
             BoolArgumentValidator().Validate(innerText)
-            return bool(innerText)
+            return innerText=="true"
         elif type == AttributeType.STRING:
             StringArgumentValidator().Validate(innerText)
             return innerText
@@ -389,10 +432,10 @@ class MoveInstruction(Instruction):
 
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
         if VarArgumentValidator().Is(self.symbol):
-            value=SymbolTable.Get(self.symbol)
+            value=SymTable.Get(self.symbol)
         else:
             value=self.symbol
-        target=SymbolTable.Get(self.var)
+        target=SymTable.Get(self.var)
         target.SetValue(value)
 
 class CreateFrameInstruction(Instruction):
@@ -414,7 +457,7 @@ class PopFrameInstruction(Instruction):
         self._GetAttributes(xmlElement, 0)
 
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
-        SymbolTable.PopFrame()
+        SymTable.PopFrame()
 
 class DefVarInstruction(Instruction):
     def __init__(self, xmlElement):
@@ -455,6 +498,8 @@ class PopsInstruction(Instruction):
         self.var = self.GetAttributeValue(attributes[0], AttributeType.VAR)
 
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
+        if len(Stack)==0:
+            raise MissingValueException()
         SymTable.Get(self.var).SetValue(Stack.pop())
 
 class AddInstruction(Instruction):
@@ -514,10 +559,10 @@ class LTInstruction(Instruction):
 
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
         op1=Symbol.ExtractValue(self.sym1,SymTable,None)
-        op2=Symbol.ExtractValue(self.sym1,SymTable,None)
+        op2=Symbol.ExtractValue(self.sym2,SymTable,None)
 
         if type(op1) is not type(op2):
-            raise SystemError
+            raise OperandTypeException()
 
         SymTable.Get(self.var).SetValue(op1<op2)        
 
@@ -530,10 +575,10 @@ class GTInstruction(Instruction):
 
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
         op1=Symbol.ExtractValue(self.sym1,SymTable,None)
-        op2=Symbol.ExtractValue(self.sym1,SymTable,None)
+        op2=Symbol.ExtractValue(self.sym2,SymTable,None)
 
         if type(op1) is not type(op2):
-            raise SystemError
+            raise OperandTypeException()
 
         SymTable.Get(self.var).SetValue(op1>op2)
 
@@ -546,10 +591,10 @@ class EQInstruction(Instruction):
 
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
         op1=Symbol.ExtractValue(self.sym1,SymTable,None)
-        op2=Symbol.ExtractValue(self.sym1,SymTable,None)
+        op2=Symbol.ExtractValue(self.sym2,SymTable,None)
 
         if type(op1) is not type(op2):
-            raise SystemError
+            raise OperandTypeException()
 
         SymTable.Get(self.var).SetValue(op1==op2)        
 
@@ -594,12 +639,12 @@ class IntToCharInstruction(Instruction):
         self.sym = self.GetAttributeValue(attributes[1], AttributeType.SYMBOL)
 
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
-        op1=Symbol.ExtractValue(self.sym1,SymTable,DataType.INT)
+        op1=Symbol.ExtractValue(self.sym,SymTable,DataType.INT)
         
         try:
             char=chr(op1)
         except ValueError:
-            raise SystemError
+            raise StringOperationException()
 
         SymTable.Get(self.var).SetValue(char)
 
@@ -616,8 +661,8 @@ class StringToIntInstruction(Instruction):
         op1=Symbol.ExtractValue(self.sym1,SymTable,DataType.STRING)
         op2=Symbol.ExtractValue(self.sym2,SymTable,DataType.INT)
 
-        if (len(op1)-1)<op2 or (len(op1)-1)>op2:
-            raise SystemError
+        if (len(op1)-1)<op2 or op2>(len(op1)-1):
+            raise StringOperationException()
 
         SymTable.Get(self.var).SetValue(ord(op1[op2]))
 
@@ -630,14 +675,14 @@ class ReadInstruction(Instruction):
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):        
         inData = input()
         sym=SymTable.Get(self.var)
-        if type=="bool":
-            data = inData == "true"
-        elif type=="int":
+        if self.type=="bool":
+            data = inData.lower() == "true"
+        elif self.type=="int":
             if IntArgumentValidator().Is(inData):
                 data = int(inData);
             else:
                 data = ""
-        elif type=="string":
+        elif self.type=="string":
             if StringArgumentValidator().Is(inData):
                 data=inData
             else:
@@ -651,13 +696,20 @@ class WriteInstruction(Instruction):
         self.sym = self.GetAttributeValue(attributes[0], AttributeType.SYMBOL)
 
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
-        val = Symbol.ExtractValue(self.sym)
+        val = Symbol.ExtractValue(self.sym,SymTable,None)
         if isinstance(val,bool):
             if val:
                 val="true"
             else:
                 val="false"
+        elif isinstance(val,str):
+            val=self.__unEscape(val)
+
         print(val)
+        
+    def __unEscape(self,s):
+        s = re.sub(r"\x5c([0-9][0-9][0-9])", lambda w: chr(int(w.group(1))), s)
+        return s
 
 
 class ConcatInstruction(Instruction):
@@ -695,8 +747,8 @@ class GetCharInstruction(Instruction):
         op1=Symbol.ExtractValue(self.sym1,SymTable,DataType.STRING)
         op2=Symbol.ExtractValue(self.sym2,SymTable,DataType.INT)
 
-        if (len(op1)-1)<op2 or (len(op1)-1)>op2:
-            raise SystemError
+        if (len(op1)-1)<op2 or op2>(len(op1)-1):
+            raise StringOperationException()
 
         SymTable.Get(self.var).SetValue(op1[op2])
 
@@ -707,15 +759,15 @@ class TypeInstruction(Instruction):
         self.sym1 = self.GetAttributeValue(attributes[1], AttributeType.SYMBOL)
 
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
-        val = Symbol.ExtractValue(self.sym1)
+        val = Symbol.ExtractValue(self.sym1,SymTable,None)
         if val==None:
             SymTable.Get(self.var).SetValue("")
+        elif type(val)==bool:            
+            SymTable.Get(self.var).SetValue("bool")
         elif type(val)==int:            
             SymTable.Get(self.var).SetValue("int")
         elif type(val)==str:            
             SymTable.Get(self.var).SetValue("string")
-        elif type(val)==bool:            
-            SymTable.Get(self.var).SetValue("bool")
         else:
             raise SystemError
 
@@ -729,12 +781,16 @@ class SetCharInstruction(Instruction):
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
         op1=Symbol.ExtractValue(self.sym1,SymTable,DataType.INT)
         op2=Symbol.ExtractValue(self.sym2,SymTable,DataType.STRING)
-        varString=Symbol.ExtractValue(self.var,SymbolTable,DataType.STRING)
-        if (len(varString)-1)<op1 or (len(varString)-1)>op1:
-            raise SystemError
+        varString=Symbol.ExtractValue(self.var,SymTable,DataType.STRING)
+        if (len(varString)-1)<op1 or op1>(len(varString)-1):
+            raise StringOperationException()
 
-        varString[op1]=op2[0]
-        SymTable.Get(self.var).SetValue(varString)
+        if len(op2)==0:
+            raise StringOperationException()
+
+        charList=list(varString)
+        charList[op1]=op2[0]
+        SymTable.Get(self.var).SetValue("".join(charList))
 
 class LabelInstruction(Instruction):
     def __init__(self, xmlElement):
@@ -762,6 +818,10 @@ class JumpIfEqInstruction(Instruction):
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
         op1=Symbol.ExtractValue(self.sym1,SymTable,None)
         op2=Symbol.ExtractValue(self.sym2,SymTable,None)
+       
+        if type(op1) is not type(op2):
+            raise OperandTypeException()
+
         if op1==op2:
             IP.GoToLabel(self.label)
 
@@ -775,6 +835,10 @@ class JumpIfNotEqInstruction(Instruction):
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
         op1=Symbol.ExtractValue(self.sym1,SymTable,None)
         op2=Symbol.ExtractValue(self.sym2,SymTable,None)
+
+        if type(op1) is not type(op2):
+            raise OperandTypeException()
+
         if op1!=op2:
             IP.GoToLabel(self.label)
 
@@ -784,23 +848,61 @@ class DPrintInstruction(Instruction):
         self.sym = self.GetAttributeValue(attributes[0], AttributeType.SYMBOL)
 
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
-        sys.stderr.write(Symbol.ExtractValue(self.sym))
+        val=Symbol.ExtractValue(self.sym,SymTable,None)
+        if val==None:
+            val=""
+        sys.stderr.write(val)
         sys.stderr.write("\n")
         
-class BreakFrameInstruction(Instruction):
+class BreakInstruction(Instruction):
     def __init__(self, xmlElement):
         self._GetAttributes(xmlElement, 0)
 
     def Execute(self,IP:InstuctionPoiner,SymTable:SymbolTable,Stack:list):
-        sys.stderr.write("IP = " + IP)
+        sys.stderr.write("IP = " + str(IP.IP))
         sys.stderr.write("\n")
 
+        
+try:    
+    argParser = argparse.ArgumentParser()
+    argParser.add_argument("--source",nargs=1,required=True)
 
-
+    try:
+        args = argParser.parse_args()
+    except exit:
+        raise ParameterException()
     
-parser = XmlParser()
-pathToXml = GetPathToXml()
-instructions = parser.Parse(pathToXml)
+    parser = XmlParser()
+    pathToXml = args.source[0]
+    instructions = parser.Parse(pathToXml)
+    
+    instructionProcessor = InstructionProcessor(instructions)
+    instructionProcessor.RegisterLabels()
+    instructionProcessor.Execute()
 
-instructionProcessor = InstructionProcessor(instructions)
-instructionProcessor.Execute()
+except ParameterException:
+    exit(10)
+#except InputFileException:
+#    exit(11)
+#except OutputFileException:
+#    exit(12)
+#except FormatException:
+#    exit(31)
+#except SyntaxError:
+#    exit(32)
+#except SemanticException:
+#    exit(52)
+#except OperandTypeException:
+#    exit(53)
+#except UndeclaredVarException:
+#    exit(54)
+#except FrameDoesNotExistException:
+#    exit(55)
+#except MissingValueException:
+#    exit(56)
+#except ZeroDivisionError:
+#    exit(57)
+#except StringOperationException:
+#    exit(58)
+#except BaseException:
+#    exit(99)
