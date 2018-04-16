@@ -1,0 +1,10 @@
+.ippcode18
+call pozdrav
+write string@po\032pozdravu
+jump exit
+
+label pozdrav
+write string@ahoj
+return
+
+label exit

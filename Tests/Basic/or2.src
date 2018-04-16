@@ -1,0 +1,4 @@
+.ippcode18
+defvar GF@prom
+or GF@prom bool@false bool@false
+write GF@prom

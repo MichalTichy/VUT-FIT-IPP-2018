@@ -1,0 +1,3 @@
+.ippcode18
+defvar GF@prom
+concat GF@prom string@1 int@1

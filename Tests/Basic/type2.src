@@ -1,0 +1,4 @@
+.ippcode18
+defvar GF@prom
+type GF@prom string@ahoj
+write GF@prom

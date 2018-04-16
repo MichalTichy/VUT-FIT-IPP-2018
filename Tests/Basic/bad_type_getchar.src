@@ -1,0 +1,3 @@
+.ippcode18
+defvar GF@prom
+getchar GF@prom bool@true int@1

@@ -1,0 +1,5 @@
+.ippcode18
+defvar GF@prom
+move GF@prom string@ipp
+setchar GF@prom int@2 string@kruci
+write GF@prom

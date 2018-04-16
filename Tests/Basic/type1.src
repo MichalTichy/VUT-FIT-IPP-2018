@@ -1,0 +1,6 @@
+.ippcode18
+defvar GF@prom
+defvar GF@prom2
+move GF@prom2 bool@false
+type GF@prom GF@prom2
+write GF@prom

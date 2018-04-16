@@ -1,0 +1,152 @@
+.IPPcode18
+JUMP $$MAIN
+LABEL length
+CREATEFRAME
+DEFVAR TF@s
+POPS TF@s
+DEFVAR TF@len
+STRLEN TF@len TF@s
+PUSHS TF@len
+RETURN
+PUSHS int@0
+RETURN
+LABEL substr
+CREATEFRAME
+DEFVAR TF@s
+POPS TF@s
+DEFVAR TF@i
+POPS TF@i
+DEFVAR TF@n
+POPS TF@n
+DEFVAR TF@strval
+MOVE TF@strval string@
+DEFVAR TF@cmpres
+LT TF@cmpres TF@i int@1
+JUMPIFEQ substr$loopend TF@cmpres bool@true
+SUB TF@i TF@i int@1
+DEFVAR TF@len
+STRLEN TF@len TF@s
+SUB TF@len TF@len TF@i
+GT TF@cmpres TF@n TF@len
+JUMPIFNEQ strcmp$chk1 TF@cmpres bool@true
+MOVE TF@n TF@len
+LABEL strcmp$chk1
+LT TF@cmpres TF@n int@0
+JUMPIFNEQ strcmp$chk2 TF@cmpres bool@true
+MOVE TF@n TF@len
+LABEL strcmp$chk2
+DEFVAR TF@char
+LABEL substr$loopstart
+GT TF@cmpres TF@n int@0
+JUMPIFNEQ substr$loopend TF@cmpres bool@true
+SUB TF@n TF@n int@1
+GETCHAR TF@char TF@s TF@i
+CONCAT TF@strval TF@strval TF@char
+ADD TF@i TF@i int@1
+JUMP substr$loopstart
+LABEL substr$loopend
+PUSHS TF@strval
+RETURN
+PUSHS string@
+RETURN
+LABEL asc
+CREATEFRAME
+DEFVAR TF@s
+POPS TF@s
+DEFVAR TF@i
+POPS TF@i
+DEFVAR TF@len
+STRLEN TF@len TF@s
+DEFVAR TF@cmp
+SUB TF@i TF@i int@1
+LT TF@cmp TF@i TF@len
+JUMPIFNEQ asc$cmpfail TF@cmp bool@true
+LT TF@cmp TF@i int@0
+JUMPIFNEQ asc$cmpfail TF@cmp bool@false
+DEFVAR TF@ascval
+STRI2INT TF@ascval TF@s TF@i
+PUSHS TF@ascval
+RETURN
+LABEL asc$cmpfail
+PUSHS int@0
+RETURN
+PUSHS int@0
+RETURN
+LABEL chr
+CREATEFRAME
+DEFVAR TF@i
+POPS TF@i
+DEFVAR TF@s
+INT2CHAR TF@s TF@i
+PUSHS TF@s
+RETURN
+PUSHS string@
+RETURN
+LABEL ackermann
+CREATEFRAME
+DEFVAR TF@m
+POPS TF@m
+DEFVAR TF@n
+POPS TF@n
+DEFVAR TF@$T0
+EQ TF@$T0 TF@m int@0
+JUMPIFNEQ $L2 TF@$T0 bool@true
+DEFVAR TF@$T3
+ADD TF@$T3 TF@n int@1
+PUSHS TF@$T3
+RETURN
+JUMP $L1
+LABEL $L2
+DEFVAR TF@$T4
+EQ TF@$T4 TF@n int@0
+JUMPIFNEQ $L6 TF@$T4 bool@true
+DEFVAR TF@$T7
+SUB TF@$T7 TF@m int@1
+PUSHS int@1
+PUSHS TF@$T7
+PUSHFRAME
+CALL ackermann
+POPFRAME
+DEFVAR TF@$T8
+POPS TF@$T8
+PUSHS TF@$T8
+RETURN
+JUMP $L5
+LABEL $L6
+DEFVAR TF@$T9
+SUB TF@$T9 TF@m int@1
+DEFVAR TF@$T01
+SUB TF@$T01 TF@n int@1
+PUSHS TF@$T01
+PUSHS TF@m
+PUSHFRAME
+CALL ackermann
+POPFRAME
+DEFVAR TF@$T11
+POPS TF@$T11
+PUSHS TF@$T11
+PUSHS TF@$T9
+PUSHFRAME
+CALL ackermann
+POPFRAME
+DEFVAR TF@$T21
+POPS TF@$T21
+PUSHS TF@$T21
+RETURN
+LABEL $L5
+LABEL $L1
+PUSHS int@0
+RETURN
+LABEL $$MAIN
+CREATEFRAME
+DEFVAR TF@a
+MOVE TF@a int@0
+PUSHS int@5
+PUSHS int@2
+PUSHFRAME
+CALL ackermann
+POPFRAME
+DEFVAR TF@$T31
+POPS TF@$T31
+MOVE TF@a TF@$T31
+WRITE TF@a

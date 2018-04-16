@@ -1,0 +1,121 @@
+.IPPcode18
+JUMP $$MAIN
+LABEL length
+CREATEFRAME
+DEFVAR TF@s
+POPS TF@s
+DEFVAR TF@len
+STRLEN TF@len TF@s
+PUSHS TF@len
+RETURN
+PUSHS int@0
+RETURN
+LABEL substr
+CREATEFRAME
+DEFVAR TF@s
+POPS TF@s
+DEFVAR TF@i
+POPS TF@i
+DEFVAR TF@n
+POPS TF@n
+DEFVAR TF@strval
+MOVE TF@strval string@
+DEFVAR TF@cmpres
+LT TF@cmpres TF@i int@1
+JUMPIFEQ substr$loopend TF@cmpres bool@true
+SUB TF@i TF@i int@1
+DEFVAR TF@len
+STRLEN TF@len TF@s
+SUB TF@len TF@len TF@i
+GT TF@cmpres TF@n TF@len
+JUMPIFNEQ strcmp$chk1 TF@cmpres bool@true
+MOVE TF@n TF@len
+LABEL strcmp$chk1
+LT TF@cmpres TF@n int@0
+JUMPIFNEQ strcmp$chk2 TF@cmpres bool@true
+MOVE TF@n TF@len
+LABEL strcmp$chk2
+DEFVAR TF@char
+LABEL substr$loopstart
+GT TF@cmpres TF@n int@0
+JUMPIFNEQ substr$loopend TF@cmpres bool@true
+SUB TF@n TF@n int@1
+GETCHAR TF@char TF@s TF@i
+CONCAT TF@strval TF@strval TF@char
+ADD TF@i TF@i int@1
+JUMP substr$loopstart
+LABEL substr$loopend
+PUSHS TF@strval
+RETURN
+PUSHS string@
+RETURN
+LABEL asc
+CREATEFRAME
+DEFVAR TF@s
+POPS TF@s
+DEFVAR TF@i
+POPS TF@i
+DEFVAR TF@len
+STRLEN TF@len TF@s
+DEFVAR TF@cmp
+SUB TF@i TF@i int@1
+LT TF@cmp TF@i TF@len
+JUMPIFNEQ asc$cmpfail TF@cmp bool@true
+LT TF@cmp TF@i int@0
+JUMPIFNEQ asc$cmpfail TF@cmp bool@false
+DEFVAR TF@ascval
+STRI2INT TF@ascval TF@s TF@i
+PUSHS TF@ascval
+RETURN
+LABEL asc$cmpfail
+PUSHS int@0
+RETURN
+PUSHS int@0
+RETURN
+LABEL chr
+CREATEFRAME
+DEFVAR TF@i
+POPS TF@i
+DEFVAR TF@s
+INT2CHAR TF@s TF@i
+PUSHS TF@s
+RETURN
+PUSHS string@
+RETURN
+LABEL $$MAIN
+CREATEFRAME
+DEFVAR TF@a
+MOVE TF@a int@0
+DEFVAR TF@$T0
+GT TF@$T0 int@78 int@2
+JUMPIFNEQ $L2 TF@$T0 bool@true
+MOVE TF@a int@12
+DEFVAR TF@$T5
+DEFVAR TF@$T8
+DEFVAR TF@$T11
+DEFVAR TF@$T21
+JUMP $L4
+LABEL $L3
+GT TF@$T5 TF@a int@8
+JUMPIFNEQ $L41 TF@$T5 bool@true
+WRITE int@69
+JUMP $L31
+LABEL $L41
+GT TF@$T8 TF@a int@3
+JUMPIFNEQ $L61 TF@$T8 bool@true
+WRITE int@74
+JUMP $L51
+LABEL $L61
+WRITE int@11
+LABEL $L51
+LABEL $L31
+SUB TF@$T11 TF@a int@1
+MOVE TF@a TF@$T11
+LABEL $L4
+LT TF@$T21 TF@a int@1
+EQ TF@$T21 TF@$T21 bool@false
+JUMPIFEQ $L3 TF@$T21 bool@true
+JUMP $L1
+LABEL $L2
+WRITE int@77
+LABEL $L1

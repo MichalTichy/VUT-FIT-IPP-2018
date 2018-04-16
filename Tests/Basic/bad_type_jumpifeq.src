@@ -1,0 +1,9 @@
+.ippcode18
+jumpifeq yes int@1 bool@true
+write string@no
+jump end
+
+label yes
+write string@yes
+
+label end

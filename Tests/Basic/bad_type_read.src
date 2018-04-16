@@ -1,0 +1,3 @@
+.ippcode18
+defvar GF@prom
+read GF@prom int@1

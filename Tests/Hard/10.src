@@ -1,0 +1,125 @@
+.IPPcode18
+JUMP $$MAIN
+LABEL length
+CREATEFRAME
+DEFVAR TF@s
+POPS TF@s
+DEFVAR TF@len
+STRLEN TF@len TF@s
+PUSHS TF@len
+RETURN
+PUSHS int@0
+RETURN
+LABEL substr
+CREATEFRAME
+DEFVAR TF@s
+POPS TF@s
+DEFVAR TF@i
+POPS TF@i
+DEFVAR TF@n
+POPS TF@n
+DEFVAR TF@strval
+MOVE TF@strval string@
+DEFVAR TF@cmpres
+LT TF@cmpres TF@i int@1
+JUMPIFEQ substr$loopend TF@cmpres bool@true
+SUB TF@i TF@i int@1
+DEFVAR TF@len
+STRLEN TF@len TF@s
+SUB TF@len TF@len TF@i
+GT TF@cmpres TF@n TF@len
+JUMPIFNEQ strcmp$chk1 TF@cmpres bool@true
+MOVE TF@n TF@len
+LABEL strcmp$chk1
+LT TF@cmpres TF@n int@0
+JUMPIFNEQ strcmp$chk2 TF@cmpres bool@true
+MOVE TF@n TF@len
+LABEL strcmp$chk2
+DEFVAR TF@char
+LABEL substr$loopstart
+GT TF@cmpres TF@n int@0
+JUMPIFNEQ substr$loopend TF@cmpres bool@true
+SUB TF@n TF@n int@1
+GETCHAR TF@char TF@s TF@i
+CONCAT TF@strval TF@strval TF@char
+ADD TF@i TF@i int@1
+JUMP substr$loopstart
+LABEL substr$loopend
+PUSHS TF@strval
+RETURN
+PUSHS string@
+RETURN
+LABEL asc
+CREATEFRAME
+DEFVAR TF@s
+POPS TF@s
+DEFVAR TF@i
+POPS TF@i
+DEFVAR TF@len
+STRLEN TF@len TF@s
+DEFVAR TF@cmp
+SUB TF@i TF@i int@1
+LT TF@cmp TF@i TF@len
+JUMPIFNEQ asc$cmpfail TF@cmp bool@true
+LT TF@cmp TF@i int@0
+JUMPIFNEQ asc$cmpfail TF@cmp bool@false
+DEFVAR TF@ascval
+STRI2INT TF@ascval TF@s TF@i
+PUSHS TF@ascval
+RETURN
+LABEL asc$cmpfail
+PUSHS int@0
+RETURN
+PUSHS int@0
+RETURN
+LABEL chr
+CREATEFRAME
+DEFVAR TF@i
+POPS TF@i
+DEFVAR TF@s
+INT2CHAR TF@s TF@i
+PUSHS TF@s
+RETURN
+PUSHS string@
+RETURN
+LABEL ghgkghgk55
+CREATEFRAME
+PUSHS int@42
+RETURN
+PUSHS int@0
+RETURN
+LABEL ghgkghgk67
+CREATEFRAME
+DEFVAR TF@a
+MOVE TF@a int@40
+PUSHFRAME
+CALL ghgkghgk55
+POPFRAME
+DEFVAR TF@$T0
+POPS TF@$T0
+MOVE TF@a TF@$T0
+DEFVAR TF@$T1
+ADD TF@$T1 TF@a TF@a
+MOVE TF@a TF@$T1
+PUSHS TF@a
+RETURN
+PUSHS int@0
+RETURN
+LABEL $$MAIN
+CREATEFRAME
+DEFVAR TF@b
+MOVE TF@b int@20
+PUSHFRAME
+CALL ghgkghgk67
+POPFRAME
+DEFVAR TF@$T2
+POPS TF@$T2
+MOVE TF@b TF@$T2
+WRITE TF@b
+PUSHFRAME
+CALL ghgkghgk67
+POPFRAME
+DEFVAR TF@$T3
+POPS TF@$T3
+MOVE TF@b TF@$T3
+WRITE TF@b

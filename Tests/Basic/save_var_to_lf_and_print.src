@@ -1,0 +1,7 @@
+.ippcode18
+createframe
+pushframe
+defvar LF@prom
+move LF@prom int@+1
+write LF@prom
+
