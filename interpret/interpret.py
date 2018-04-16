@@ -869,8 +869,11 @@ try:
 
     try:
         args = argParser.parse_args()
-    except exit:
-        raise ParameterException()
+    except SystemExit as ex:
+        if ex.code==0:
+            exit(0)
+        else:
+            raise ParameterException()
     
     parser = XmlParser()
     pathToXml = args.source[0]
@@ -882,27 +885,29 @@ try:
 
 except ParameterException:
     exit(10)
-#except InputFileException:
-#    exit(11)
-#except OutputFileException:
-#    exit(12)
-#except FormatException:
-#    exit(31)
-#except SyntaxError:
-#    exit(32)
-#except SemanticException:
-#    exit(52)
-#except OperandTypeException:
-#    exit(53)
-#except UndeclaredVarException:
-#    exit(54)
-#except FrameDoesNotExistException:
-#    exit(55)
-#except MissingValueException:
-#    exit(56)
-#except ZeroDivisionError:
-#    exit(57)
-#except StringOperationException:
-#    exit(58)
-#except BaseException:
-#    exit(99)
+except InputFileException:
+    exit(11)
+except OutputFileException:
+    exit(12)
+except FormatException:
+    exit(31)
+except SyntaxError:
+    exit(32)
+except SemanticException:
+    exit(52)
+except OperandTypeException:
+    exit(53)
+except UndeclaredVarException:
+    exit(54)
+except FrameDoesNotExistException:
+    exit(55)
+except MissingValueException:
+    exit(56)
+except ZeroDivisionError:
+    exit(57)
+except StringOperationException:
+    exit(58)
+except SystemExit as ex:
+    exit(ex.code)
+except BaseException:
+    exit(99)
