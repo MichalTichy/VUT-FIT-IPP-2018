@@ -11,5 +11,4 @@ test
 Test runner for parse and interpret
 
 Tests
-Test cases for test
-tests were provided by various schoolmates
+Test cases for tests were provided by various schoolmates
